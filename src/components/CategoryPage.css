@@ -1,0 +1,172 @@
+/* Container */
+.container {
+  padding: 30px 20px;
+  max-width: 950px;
+  margin: auto;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9fafb;
+}
+
+/* Heading */
+.container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #222;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.form div {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Inputs */
+.form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form input:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.4);
+}
+
+/* Buttons */
+.form button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.form button:hover {
+  background-color: #43a047;
+}
+
+/* Cancel Button */
+.btn-cancel {
+  background-color: #757575;
+}
+
+.btn-cancel:hover {
+  background-color: #616161;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Table Head */
+.table th {
+  background-color: #f1f5f9;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Table Rows */
+.table td {
+  padding: 12px;
+  border-top: 1px solid #eee;
+}
+
+.table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Status */
+.active {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.inactive {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+/* Buttons */
+.btn {
+  padding: 6px 12px;
+  margin-right: 6px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 13px;
+}
+
+/* Edit Button */
+.btn-edit {
+  background-color: #2196F3;
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: #1976d2;
+}
+
+/* Toggle Button */
+.btn-toggle {
+  background-color: #ff9800;
+  color: white;
+}
+
+.btn-toggle:hover {
+  background-color: #f57c00;
+}
+
+/* Error */
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Empty State */
+.container p {
+  margin-top: 20px;
+  color: #777;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form {
+    flex-direction: column;
+  }
+
+  .table th,
+  .table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .btn {
+    margin-bottom: 5px;
+  }
+}
