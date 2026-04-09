@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./CategoryPage.css";
+import { categoriesApi } from "../api/api"; 
 
 const CategoryPage = () => {
   const [categories, setCategories] = useState([]);
@@ -14,52 +15,79 @@ const CategoryPage = () => {
     formState: { errors },
   } = useForm();
 
-  // Submit (Add / Update)
-  const onSubmit = (data) => {
-    const trimmedData = {
-      categoryName: data.categoryName.trim(),
-      description: data.description?.trim(),
-    };
-
-    if (editId !== null) {
-      // Update
-      setCategories((prev) =>
-        prev.map((cat) =>
-          cat.id === editId ? { ...cat, ...trimmedData } : cat
-        )
-      );
-      setEditId(null);
-    } else {
-      // Create
-      const newCategory = {
-        id: Date.now(),
-        ...trimmedData,
-        status: true,
-        productCount: 0,
-      };
-      setCategories((prev) => [...prev, newCategory]);
+  const fetchCategories = async () => {
+    try {
+      const res = await categoriesApi.get("");
+      setCategories(res.data);
+    } catch (error) {
+      console.error("Error fetching categories", error);
     }
-
-    reset();
   };
 
-  // Edit
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+
+  const onSubmit = async (data) => {
+    const payload = {
+      categoryName: data.categoryName.trim(),
+      description: data.description?.trim(),
+      status: true,
+    };
+
+    try {
+      if (editId !== null) {
+        // ✅ Update
+        await categoriesApi.put(`/${editId}`, payload);
+        setEditId(null);
+      } else {
+        // ✅ Create
+        await categoriesApi.post("", payload);
+      }
+
+      fetchCategories(); // refresh
+      reset();
+    } catch (error) {
+      console.error("Error saving category", error);
+    }
+  };
+
   const handleEdit = (cat) => {
     setValue("categoryName", cat.categoryName);
     setValue("description", cat.description);
-    setEditId(cat.id);
+    setEditId(cat.categoryId);
   };
 
-  // Activate / Deactivate (with confirm)
-  const toggleStatus = (id) => {
+
+  const toggleStatus = async (cat) => {
     const confirmAction = window.confirm("Are you sure?");
     if (!confirmAction) return;
 
-    setCategories((prev) =>
-      prev.map((cat) =>
-        cat.id === id ? { ...cat, status: !cat.status } : cat
-      )
-    );
+    try {
+      if (cat.status) {
+        await categoriesApi.put(`/deactivate/${cat.categoryId}`);
+      } else {
+        await categoriesApi.put(`/activate/${cat.categoryId}`);
+      }
+
+      fetchCategories();
+    } catch (error) {
+      console.error("Error updating status", error);
+    }
+  };
+
+
+  const handleDelete = async (id) => {
+    const confirmAction = window.confirm("Delete this category?");
+    if (!confirmAction) return;
+
+    try {
+      await categoriesApi.delete(`/${id}`);
+      fetchCategories();
+    } catch (error) {
+      console.error("Error deleting category", error);
+    }
   };
 
   return (
@@ -68,7 +96,6 @@ const CategoryPage = () => {
 
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="form">
-        {/* Category Name */}
         <div>
           <input
             type="text"
@@ -88,7 +115,6 @@ const CategoryPage = () => {
           )}
         </div>
 
-        {/* Description */}
         <div>
           <input
             type="text"
@@ -100,12 +126,8 @@ const CategoryPage = () => {
               },
             })}
           />
-          {errors?.description && (
-            <p className="error">{errors.description.message}</p>
-          )}
         </div>
 
-        {/* Buttons */}
         <button type="submit">
           {editId ? "Update Category" : "Add Category"}
         </button>
@@ -133,34 +155,38 @@ const CategoryPage = () => {
             <tr>
               <th>Name</th>
               <th>Description</th>
-              <th>Products</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {categories.map((cat) => (
-              <tr key={cat.id}>
+              <tr key={cat.categoryId}>
                 <td>{cat.categoryName}</td>
                 <td>{cat.description}</td>
-                <td>{cat.productCount}</td>
                 <td className={cat.status ? "active" : "inactive"}>
                   {cat.status ? "Active" : "Inactive"}
                 </td>
                 <td>
                   <button
-                    type="button"
                     className="btn btn-edit"
                     onClick={() => handleEdit(cat)}
                   >
                     Edit
                   </button>
+
                   <button
-                    type="button"
                     className="btn btn-toggle"
-                    onClick={() => toggleStatus(cat.id)}
+                    onClick={() => toggleStatus(cat)}
                   >
                     {cat.status ? "Deactivate" : "Activate"}
+                  </button>
+
+                  <button
+                    className="btn btn-delete"
+                    onClick={() => handleDelete(cat.categoryId)}
+                  >
+                    Delete
                   </button>
                 </td>
               </tr>
