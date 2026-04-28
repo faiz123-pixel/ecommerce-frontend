@@ -1,76 +1,78 @@
-/* Container */
-.container {
+/* 🔥 MAIN LAYOUT FIX */
+.page-wrapper {
+  display: flex;
+}
+
+/* Sidebar space handled properly */
+.main-content {
+  flex: 1;
   padding: 20px;
-  max-width: 900px;
-  margin: auto;
-  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  min-height: 100vh;
 }
 
-h1, h2 {
-  margin-bottom: 15px;
+/* Push content right on desktop */
+@media (min-width: 992px) {
+  .main-content {
+    margin-left: 250px; /* MUST match sidebar width */
+  }
 }
 
-/* Form */
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+/* 🔥 HEADING */
+h1 {
   margin-bottom: 20px;
 }
 
+/* 🔥 FORM */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
 .form-grid input,
+.form-grid select,
 .form-grid textarea {
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
-.form-grid textarea {
-  grid-column: span 2;
-}
-
-button {
-  padding: 8px 12px;
+/* 🔥 BUTTON */
+.btn-primary {
+  background: #007bff;
+  color: white;
   border: none;
-  border-radius: 5px;
+  padding: 10px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.9;
+.btn-primary:hover {
+  background: #0056b3;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-  grid-column: span 2;
-}
-
-.btn-edit {
-  background-color: orange;
-}
-
-.btn-delete {
-  background-color: red;
-  color: white;
-}
-
-/* Table */
+/* 🔥 TABLE */
 table {
   width: 100%;
   border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
   text-align: center;
 }
 
 th {
-  background-color: #f2f2f2;
+  background: #28a745;
+  color: white;
 }
 
+/* 🔥 STATUS */
 .status-active {
   color: green;
   font-weight: bold;
@@ -79,4 +81,36 @@ th {
 .status-inactive {
   color: red;
   font-weight: bold;
+}
+
+/* 🔥 ACTION BUTTONS */
+.btn-edit {
+  background: orange;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 5px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-delete {
+  background: crimson;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 5px;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 🔥 RESPONSIVE TABLE */
+@media (max-width: 768px) {
+  table {
+    font-size: 12px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
