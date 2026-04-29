@@ -75,6 +75,19 @@ function Register() {
                   </div>
 
                   <div className="mb-3">
+                    <label className="form-label">Phone Number</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Enter your Phone Number"
+                      {...register("phone",{required:"Number is required",
+                        minLength:{value:10,message:"Minimum 10 characters are required",},
+                      })}
+                    />
+                    {errors.phone && <small className="text-danger">{errors.phone.message}</small>}
+                  </div>
+
+                  <div className="mb-3">
                     <label className="form-label">Email Address</label>
                     <input
                       type="email"

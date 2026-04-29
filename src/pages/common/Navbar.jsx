@@ -59,7 +59,7 @@ function Navbar() {
 
                 <li className="nav-item">
                   <button
-                    className="btn btn-light btn-sm ms-lg-2"
+                    className="btn btn-dark btn-sm ms-lg-2"
                     onClick={logoutUser}
                   >
                     Logout

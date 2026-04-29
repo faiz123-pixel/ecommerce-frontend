@@ -12,6 +12,7 @@ import { CartProvider } from './context/CartContext'
 import Checkout from './pages/Checkout'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Orders from './pages/admin/Orders'
+import Users from './pages/admin/Users'
 
 function App() {
 
@@ -56,6 +57,10 @@ function App() {
           path:"/admin/orders",
           element: <Orders/>
         },
+        {
+          path:"/admin/users",
+          element:<Users/>
+        }
       ]
     }
   ])
