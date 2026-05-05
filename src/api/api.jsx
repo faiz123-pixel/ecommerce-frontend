@@ -16,13 +16,18 @@ export const userApi = axios.create({
 export const ordersApi = axios.create({
   baseURL: "http://localhost:8080/orders",
 });
+export const paymentApi = axios.create({
+  baseURL: "http://localhost:8080/payments",
+});
 
 const apis = [
   userApi,
   categoriesApi,
   productsApi,
   loginApi,
-  ordersApi
+  ordersApi,
+  paymentApi
+
 ];
 
 apis.forEach((api) => {

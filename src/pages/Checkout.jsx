@@ -3,11 +3,14 @@ import { CartContext } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { ordersApi } from "../api/api";
 import { LoginContext } from "../context/LoginContext";
+import { createOrder, verifyPayment } from "../services/paymentService";
+import { useRazorpay } from "../services/useRazorpay";
 
 function Checkout() {
   const { cart, clearCart } = useContext(CartContext);
   const { user } = useContext(LoginContext);
   const navigate = useNavigate();
+  const { openPaymentModal,isLoaded} = useRazorpay();
 
   const [form, setForm] = useState({
     address: ""
@@ -34,6 +37,11 @@ function Checkout() {
     return;
   }
 
+  if (!isLoaded) {
+    alert("Payment system is loading. Please try again.");
+    return;
+  }
+
   try {
     // ✅ Calculate total
     const totalAmount = cart.reduce(
@@ -53,7 +61,31 @@ function Checkout() {
 
     console.log("Order Response:", response.data);
 
-    alert("Order placed successfully!");
+    const orderResponse =await createOrder(totalAmount,"INR",`${response.data.orderId}`);
+    
+    const paymentResponse = await openPaymentModal({
+      amount:totalAmount*100,
+      orderId: orderResponse.id,
+      name: user.firstName || user.email,
+      email:user.email,
+      phone: user.phone || " ",
+      backendOrderId: `${response.data.orderId}`,
+    });
+      console.log(paymentResponse)
+
+    // Verify payment with booking ID
+      const verificationResponse = await verifyPayment({
+        razorpay_order_id: paymentResponse.razorpay_order_id,
+        razorpay_payment_id: paymentResponse.razorpay_payment_id,
+        razorpay_signature: paymentResponse.razorpay_signature,
+        orderId: response.data.orderId, // Send booking ID
+      });
+
+    if (verificationResponse.success) {
+        alert("Order placed successfully!");
+      } else {
+        alert("Payment verification failed. Please contact support.");
+      }
 
     clearCart();
     navigate("/");

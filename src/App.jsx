@@ -13,6 +13,7 @@ import Checkout from './pages/Checkout'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Orders from './pages/admin/Orders'
 import Users from './pages/admin/Users'
+import Payments from './pages/admin/Payments'
 
 function App() {
 
@@ -60,6 +61,10 @@ function App() {
         {
           path:"/admin/users",
           element:<Users/>
+        },
+        {
+          path:"/admin/payments",
+          element:<Payments/>
         }
       ]
     }

@@ -9,7 +9,8 @@ function Sidebar() {
     { name: "Products", path: "/admin/products" },
     { name: "Categories", path: "/admin/categories" },
     { name: "Orders", path: "/admin/orders" },
-    { name: "Users", path: "/admin/users" }
+    { name: "Users", path: "/admin/users" },
+    { name: "Payments", path: "/admin/payments" },
   ];
 
   return (
