@@ -8,12 +8,12 @@ import Home from './pages/Home'
 import Login from './pages/user/Login'
 import Register from './pages/user/Register'
 import Cart from './pages/Cart'
-import { CartProvider } from './context/CartContext'
 import Checkout from './pages/Checkout'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Orders from './pages/admin/Orders'
 import Users from './pages/admin/Users'
 import Payments from './pages/admin/Payments'
+import CartDashboard from './pages/admin/CartDashboard'
 
 function App() {
 
@@ -65,6 +65,10 @@ function App() {
         {
           path:"/admin/payments",
           element:<Payments/>
+        },
+        {
+          path:"/admin/carts",
+          element:<CartDashboard/>
         }
       ]
     }
@@ -73,9 +77,7 @@ function App() {
   return (
 <>
 <LoginProvider>
-  <CartProvider>
     <RouterProvider router={routes}/>
-  </CartProvider>
 </LoginProvider>
 </>
   )

@@ -11,6 +11,7 @@ function Sidebar() {
     { name: "Orders", path: "/admin/orders" },
     { name: "Users", path: "/admin/users" },
     { name: "Payments", path: "/admin/payments" },
+    { name: "Carts", path: "/admin/carts" },
   ];
 
   return (

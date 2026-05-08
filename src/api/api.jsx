@@ -3,7 +3,6 @@ import axios from "axios";
 export const categoriesApi = axios.create({
   baseURL: "http://localhost:8080/categories",
 });
-
 export const productsApi = axios.create({
   baseURL: "http://localhost:8080/products",
 });
@@ -19,6 +18,9 @@ export const ordersApi = axios.create({
 export const paymentApi = axios.create({
   baseURL: "http://localhost:8080/payments",
 });
+export const cartApi = axios.create({
+  baseURL: "http://localhost:8080/carts",
+})
 
 const apis = [
   userApi,
@@ -26,7 +28,8 @@ const apis = [
   productsApi,
   loginApi,
   ordersApi,
-  paymentApi
+  paymentApi,
+  cartApi
 
 ];
 
