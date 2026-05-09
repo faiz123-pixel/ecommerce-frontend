@@ -20,7 +20,10 @@ export const paymentApi = axios.create({
 });
 export const cartApi = axios.create({
   baseURL: "http://localhost:8080/carts",
-})
+});
+export const wishlistApi = axios.create({
+  baseURL: "http://localhost:8080/wishlist",
+});
 
 const apis = [
   userApi,
@@ -29,7 +32,8 @@ const apis = [
   loginApi,
   ordersApi,
   paymentApi,
-  cartApi
+  cartApi,
+  wishlistApi
 
 ];
 

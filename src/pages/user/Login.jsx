@@ -23,7 +23,7 @@ function Login() {
         let roleName= res.data.userDto.role.roleName;
         console.log(roleName);
         if (roleName=="ROLE_USER")
-          navigate("/user-dashboard");
+          navigate("/");
         else
           navigate("/admin");
 

@@ -14,6 +14,7 @@ import Orders from './pages/admin/Orders'
 import Users from './pages/admin/Users'
 import Payments from './pages/admin/Payments'
 import CartDashboard from './pages/admin/CartDashboard'
+import Wishlist from './pages/Wishlist'
 
 function App() {
 
@@ -37,6 +38,10 @@ function App() {
         {
           path:"/cart",
           element: <Cart/>
+        },
+        {
+          path:"/wishlist",
+          element: <Wishlist/>
         },
         {
           path:"/checkout",

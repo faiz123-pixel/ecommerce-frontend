@@ -36,7 +36,7 @@ function Navbar() {
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/products">Products</Link>
+              <Link className="nav-link" to="/wishlist">Wishlist</Link>
             </li>
 
             <li className="nav-item">

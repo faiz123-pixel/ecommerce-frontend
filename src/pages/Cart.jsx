@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cartApi } from "../api/api";
+import { LoginContext } from "../context/LoginContext";
 
 function Cart() {
   const navigate = useNavigate();
+
+    const { user } = useContext(LoginContext);
 
   const [cart, setCart] = useState([]);
 
   // 🔥 Fetch Cart Items
   const fetchCart = async () => {
     try {
-      const res = await cartApi.get("");
+      const res = await cartApi.get(`/user/${user.id}`);
 
       setCart(res.data);
     } catch (error) {
@@ -19,8 +22,9 @@ function Cart() {
   };
 
   useEffect(() => {
-    fetchCart();
-  }, []);
+    if (user?.id)
+      fetchCart();
+  }, [user]);
 
   // 🔥 Increase Quantity
   const increaseQty = async (item) => {
