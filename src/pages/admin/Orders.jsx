@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { ordersApi, userApi } from "../../api/api";
+import { ordersApi, shippingApi, userApi,} from "../../api/api";
 import Sidebar from "./Sidebar";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
-   const [users, setUsers] = useState({});
+  const [users, setUsers] = useState({});
+
+  // Modal states
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+
+  // Shipping form
+  const [shippingData, setShippingData] = useState({
+    courierService: "",
+    shippingCost: "",
+    trackingNumber: "",
+  });
 
   const fetchOrders = async () => {
     try {
@@ -12,25 +23,37 @@ function Orders() {
       const userRes = await userApi.get("");
 
       const userMap = {};
-    userRes.data.forEach(user => {
-      userMap[user.id] = `${user.firstName} ${user.lastName}`;
-    });
-    setUsers(userMap);
+
+      userRes.data.forEach((user) => {
+        userMap[user.id] = `${user.firstName} ${user.lastName}`;
+      });
+
+      setUsers(userMap);
       setOrders(res.data);
     } catch (err) {
       console.error(err);
     }
   };
 
-
   const getCustomerName = (customerId) => {
-  return users[customerId] || "Unknown User";
-};
+    return users[customerId] || "Unknown User";
+  };
 
   useEffect(() => {
     fetchOrders();
   }, []);
 
+  // Open modal when shipped selected
+  const handleStatusChange = (order, status) => {
+    if (status === "Shipped") {
+      setSelectedOrderId(order);
+      setShowModal(true);
+    } else {
+      updateStatus(order.orderId, status);
+    }
+  };
+
+  // Update order status
   const updateStatus = async (id, status) => {
     try {
       await ordersApi.put(`/${id}/status?status=${status}`);
@@ -39,6 +62,50 @@ function Orders() {
       console.error(err);
     }
   };
+
+  // Submit shipping details
+  const handleShippingSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+
+    const payload = {
+      orders: {
+        orderId: selectedOrderId.orderId,
+      },
+      courierService: shippingData.courierService,
+      shippingCost: shippingData.shippingCost,
+      trackingNumber: shippingData.trackingNumber,
+    };
+
+    console.log(payload);
+
+    // Save shipping info
+    const res = await shippingApi.post("", payload);
+
+    console.log(res.data);
+
+    // Update order status
+    await updateStatus(selectedOrderId.orderId, "Shipped");
+
+    // Reset form
+    setShippingData({
+      courierService: "",
+      shippingCost: "",
+      trackingNumber: "",
+    });
+
+    setShowModal(false);
+
+    alert("Shipping details added successfully");
+
+    fetchOrders();
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed to add shipping details");
+  }
+};
 
   const cancelOrder = async (id) => {
     try {
@@ -54,33 +121,54 @@ function Orders() {
 
   return (
     <>
-    <style>
-      {`
-      .orders-main {
-  padding: 20px;
-  background: #f4f6f9;
-  min-height: 100vh;
-}
+      <style>
+        {`
+        .orders-main {
+          padding: 20px;
+          background: #f4f6f9;
+          min-height: 100vh;
+        }
 
-@media (min-width: 992px) {
-  .orders-main {
-    margin-left: 250px; /* must match sidebar width */
-  }
-}
+        @media (min-width: 992px) {
+          .orders-main {
+            margin-left: 250px;
+          }
+        }
 
-.table-responsive {
-  overflow-x: auto;
-}
+        .table-responsive {
+          overflow-x: auto;
+        }
 
-table th {
-  white-space: nowrap;
-}
+        table th {
+          white-space: nowrap;
+        }
 
-.form-select {
-  min-width: 130px;
-}
-      `}
-    </style>
+        .form-select {
+          min-width: 130px;
+        }
+
+        .modal-backdrop-custom {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 999;
+        }
+
+        .custom-modal {
+          background: white;
+          padding: 25px;
+          border-radius: 10px;
+          width: 400px;
+        }
+        `}
+      </style>
+
       <Sidebar />
 
       <div className="orders-main">
@@ -106,6 +194,7 @@ table th {
                     <td>{o.orderId}</td>
                     <td>{getCustomerName(o.customerId)}</td>
                     <td>{o.shippingAddress}</td>
+
                     <td>
                       <span
                         className={`badge ${
@@ -119,6 +208,7 @@ table th {
                         {o.orderStatus}
                       </span>
                     </td>
+
                     <td>₹{o.totalAmount}</td>
 
                     <td>
@@ -126,7 +216,10 @@ table th {
                         className="form-select mb-2"
                         value={o.orderStatus}
                         onChange={(e) =>
-                          updateStatus(o.orderId, e.target.value)
+                          handleStatusChange(
+                            o,
+                            e.target.value
+                          )
                         }
                       >
                         <option value="">Select Option</option>
@@ -151,6 +244,91 @@ table th {
           </div>
         </div>
       </div>
+
+      {/* Shipping Modal */}
+      {showModal && (
+        <div className="modal-backdrop-custom">
+          <div className="custom-modal">
+            <h4 className="mb-3">Shipping Details</h4>
+
+            <form onSubmit={handleShippingSubmit}>
+              <div className="mb-3">
+                <label className="form-label">
+                  Courier Service
+                </label>
+
+                <input
+                  type="text"
+                  className="form-control"
+                  required
+                  value={shippingData.courierService}
+                  onChange={(e) =>
+                    setShippingData({
+                      ...shippingData,
+                      courierService: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">
+                  Shipping Cost
+                </label>
+
+                <input
+                  type="number"
+                  className="form-control"
+                  required
+                  value={shippingData.shippingCost}
+                  onChange={(e) =>
+                    setShippingData({
+                      ...shippingData,
+                      shippingCost: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">
+                  Tracking Number
+                </label>
+
+                <input
+                  type="text"
+                  className="form-control"
+                  required
+                  value={shippingData.trackingNumber}
+                  onChange={(e) =>
+                    setShippingData({
+                      ...shippingData,
+                      trackingNumber: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              <div className="d-flex gap-2">
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100"
+                >
+                  Save
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-secondary w-100"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }

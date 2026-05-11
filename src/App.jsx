@@ -15,6 +15,7 @@ import Users from './pages/admin/Users'
 import Payments from './pages/admin/Payments'
 import CartDashboard from './pages/admin/CartDashboard'
 import Wishlist from './pages/Wishlist'
+import ShippingDashboard from './pages/admin/ShippingDashboard'
 
 function App() {
 
@@ -74,6 +75,10 @@ function App() {
         {
           path:"/admin/carts",
           element:<CartDashboard/>
+        },
+        {
+          path:"/admin/shipping",
+          element:<ShippingDashboard/>
         }
       ]
     }
