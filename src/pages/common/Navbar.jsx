@@ -45,7 +45,7 @@ function Navbar() {
 
             {isAuthenticated && (
               <li className="nav-item">
-                <Link className="nav-link" to="/orders">Orders</Link>
+                <Link className="nav-link" to="/dashboard">Dashboard</Link>
               </li>
             )}
 

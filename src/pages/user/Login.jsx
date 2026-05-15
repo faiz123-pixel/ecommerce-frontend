@@ -45,9 +45,9 @@ function Login() {
             <div className="card border-0 shadow-lg rounded-4">
               {/* Header */}
               <div className="card-header bg-success text-white text-center py-4 rounded-top-4">
-                <h2 className="fw-bold mb-1">EcoTrack 🌱</h2>
+                <h2 className="fw-bold mb-1">Login </h2>
                 <p className="mb-0 small">
-                  Login to continue managing recycling responsibly
+                  Login to continue...
                 </p>
               </div>
 

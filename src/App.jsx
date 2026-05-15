@@ -16,6 +16,11 @@ import Payments from './pages/admin/Payments'
 import CartDashboard from './pages/admin/CartDashboard'
 import Wishlist from './pages/Wishlist'
 import ShippingDashboard from './pages/admin/ShippingDashboard'
+import UserDashboard from './pages/user/UserDashboard'
+import AddReview from './pages/user/AddReview'
+import EditReview from './pages/user/EditReview'
+import ProductDetails from './pages/ProductDetails'
+import ReviewDashboard from './pages/admin/ReviewDashboard'
 
 function App() {
 
@@ -49,6 +54,10 @@ function App() {
           element: <Checkout/>
         },
         {
+          path: "/dashboard",
+          element: <UserDashboard />
+        },
+        {
           path:"/admin",
           element: <AdminDashboard/>
         },
@@ -79,6 +88,22 @@ function App() {
         {
           path:"/admin/shipping",
           element:<ShippingDashboard/>
+        },
+        {
+          path:"/admin/review",
+          element:<ReviewDashboard/>
+        },
+        {
+          path:"/reviews/add/:productId",
+          element:<AddReview/>
+        },
+        {
+          path:"/reviews/edit/:reviewId",
+          element:<EditReview/>
+        },
+        {
+          path:"/product/:productId",
+          element:<ProductDetails/>
         }
       ]
     }

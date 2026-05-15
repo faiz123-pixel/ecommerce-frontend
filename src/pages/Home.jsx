@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { cartApi, productsApi, wishlistApi } from "../api/api";
 import { LoginContext } from "../context/LoginContext";
 
@@ -8,11 +9,15 @@ function Home() {
 
   const { user } = useContext(LoginContext);
 
-  // 🔥 Fetch Products + Wishlist
+  const navigate = useNavigate();
+
+  // Fetch Products + Wishlist
   useEffect(() => {
     fetchProducts();
-    if(user?.id)
+
+    if (user?.id) {
       fetchWishlist();
+    }
   }, [user]);
 
   const fetchProducts = async () => {
@@ -26,19 +31,21 @@ function Home() {
 
   const fetchWishlist = async () => {
     try {
-      console.log(user)
       const res = await wishlistApi.get(`/user/${user.id}`);
 
-      console.log(res.data)
-      // 🔥 Only current user wishlist
       setWishlist(res.data || []);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // 🔥 Add To Cart
+  // Add To Cart
   const handleAddToCart = async (product) => {
+    if (!user) {
+      alert("Please login first");
+      return;
+    }
+
     if (product.inventoryCount <= 0) {
       alert("Product is out of stock!");
       return;
@@ -55,7 +62,7 @@ function Home() {
           item.user.id === user.id
       );
 
-      // ✅ Update Quantity
+      // Update Quantity
       if (existingItem) {
         if (existingItem.quantity >= product.inventoryCount) {
           alert("No more stock available");
@@ -75,11 +82,11 @@ function Home() {
         );
       }
 
-      // ✅ New Product
+      // Add New Product
       else {
         const data = {
-          product: product,
-          user: user,
+          product,
+          user,
           quantity: 1,
           totalPrice: product.price,
         };
@@ -87,23 +94,27 @@ function Home() {
         await cartApi.post("", data);
       }
 
-      // alert("Added to cart!");
+      alert("Added to cart!");
     } catch (error) {
       console.error(error);
       alert("Failed to add to cart");
     }
   };
 
-  // 🔥 Wishlist Toggle
+  // Wishlist Toggle
   const toggleWishlist = async (product) => {
+    if (!user) {
+      alert("Please login first");
+      return;
+    }
+
     const existingItem = wishlist.find(
       (item) =>
         item.product.productId === product.productId
     );
 
     try {
-      // console.log(existingItem)
-      // ❌ Remove
+      // Remove
       if (existingItem) {
         await wishlistApi.delete(
           `/${existingItem.id}`
@@ -111,17 +122,16 @@ function Home() {
 
         setWishlist(
           wishlist.filter(
-            (item) =>
-              item.id !== existingItem.id
+            (item) => item.id !== existingItem.id
           )
         );
       }
 
-      // ✅ Add
+      // Add
       else {
         const data = {
-          product: product,
-          user: user,
+          product,
+          user,
         };
 
         const res = await wishlistApi.post("", data);
@@ -134,7 +144,7 @@ function Home() {
     }
   };
 
-  // 🔥 Check Wishlisted
+  // Check Wishlisted
   const isWishlisted = (productId) => {
     return wishlist.some(
       (item) =>
@@ -144,28 +154,33 @@ function Home() {
 
   return (
     <>
-      {/* 🔥 Internal CSS */}
       <style>
         {`
           .product-card {
-            border-radius: 16px;
-            transition: all 0.3s ease;
+            border-radius: 18px;
+            transition: 0.3s;
             overflow: hidden;
           }
 
           .product-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+          }
+
+          .product-image {
+            height: 230px;
+            object-fit: cover;
+            cursor: pointer;
           }
 
           .product-title {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 600;
           }
 
           .product-desc {
             font-size: 0.9rem;
-            height: 45px;
+            height: 42px;
             overflow: hidden;
           }
 
@@ -186,8 +201,9 @@ function Home() {
             border-radius: 50%;
             background: white;
             border: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             transition: 0.3s;
+            z-index: 2;
           }
 
           .wishlist-btn:hover {
@@ -221,7 +237,7 @@ function Home() {
                 >
                   <div className="card product-card h-100 border-0 shadow-sm position-relative">
 
-                    {/* ❤️ Wishlist Button */}
+                    {/* Wishlist Button */}
                     <button
                       className="wishlist-btn position-absolute top-0 end-0 m-2"
                       onClick={() =>
@@ -253,19 +269,32 @@ function Home() {
                           ₹{product.price}
                         </p>
 
-                        <button
-                          className="btn btn-success w-100 btn-cart"
-                          disabled={
-                            product.inventoryCount === 0
-                          }
-                          onClick={() =>
-                            handleAddToCart(product)
-                          }
-                        >
-                          {product.inventoryCount === 0
-                            ? "Out of Stock"
-                            : "Add to Cart"}
-                        </button>
+                        <div className="d-grid gap-2">
+                          <button
+                            className="btn btn-dark"
+                            onClick={() =>
+                              navigate(
+                                `/product/${product.productId}`
+                              )
+                            }
+                          >
+                            View Details
+                          </button>
+
+                          <button
+                            className="btn btn-success btn-cart"
+                            disabled={
+                              product.inventoryCount === 0
+                            }
+                            onClick={() =>
+                              handleAddToCart(product)
+                            }
+                          >
+                            {product.inventoryCount === 0
+                              ? "Out of Stock"
+                              : "Add to Cart"}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

@@ -38,10 +38,7 @@ function Register() {
             <div className="card border-0 shadow-lg">
               {/* Header */}
               <div className="card-header bg-success text-white text-center py-4">
-                <h3 className="fw-bold mb-0">Create Your EcoTrack Account</h3>
-                <p className="mb-0 small">
-                  Join us in building a greener future 🌱
-                </p>
+                <h3 className="fw-bold mb-0">Register</h3>
               </div>
 
               {/* Body */}
