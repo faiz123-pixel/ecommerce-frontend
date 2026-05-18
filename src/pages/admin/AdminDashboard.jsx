@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
 import {
   ordersApi,
   userApi,
@@ -56,8 +55,6 @@ function AdminDashboard() {
 
   return (
     <>
-      <Sidebar />
-
       {/* 🔥 INTERNAL CSS */}
       <style>
         {`
@@ -73,7 +70,6 @@ function AdminDashboard() {
 
           @media (min-width: 992px) {
             .admin-main {
-              margin-left: 250px;
             }
           }
         `}

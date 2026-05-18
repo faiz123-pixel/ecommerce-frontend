@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { userApi } from "../../api/api";
-import Sidebar from "./Sidebar";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -83,7 +82,6 @@ function Users() {
 
   return (
     <>
-      <Sidebar />
 
       <div className="main-content">
         <div className="container-fluid">

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ordersApi, shippingApi, userApi,} from "../../api/api";
-import Sidebar from "./Sidebar";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
@@ -131,7 +130,6 @@ function Orders() {
 
         @media (min-width: 992px) {
           .orders-main {
-            margin-left: 250px;
           }
         }
 
@@ -168,8 +166,6 @@ function Orders() {
         }
         `}
       </style>
-
-      <Sidebar />
 
       <div className="orders-main">
         <div className="container-fluid">

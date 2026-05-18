@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./CategoryPage.css";
 import { categoriesApi, productsApi } from "../api/api";
-import Sidebar from "../pages/admin/Sidebar";
 
 const CategoryPage = () => {
   const [categories, setCategories] = useState([]);
@@ -126,8 +125,6 @@ const CategoryPage = () => {
 
   return (
     <>
-      <Sidebar />
-
       <div className="category-main">
         <div className="container-fluid">
           <h2 className="mb-4">Category Management</h2>

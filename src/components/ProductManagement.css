@@ -14,7 +14,6 @@
 /* Push content right on desktop */
 @media (min-width: 992px) {
   .main-content {
-    margin-left: 250px; /* MUST match sidebar width */
   }
 }
 

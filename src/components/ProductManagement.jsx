@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./ProductManagement.css";
 import { categoriesApi, productsApi } from "../api/api";
-import Sidebar from "../pages/admin/Sidebar";
 
 const ProductManagement = () => {
   const [products, setProducts] = useState([]);
@@ -106,7 +105,6 @@ const ProductManagement = () => {
 
   return (
     <>
-    <Sidebar/>
     <div className="main-content">
     <div className="container-fluid">
       <h1>Product Management</h1>

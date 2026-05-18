@@ -30,6 +30,9 @@ export const shippingApi = axios.create({
 export const reviewsApi = axios.create({
   baseURL: "http://localhost:8080/reviews",
 });
+export const couponsApi = axios.create({
+  baseURL: "http://localhost:8080/coupons",
+});
 
 const apis = [
   userApi,
@@ -41,7 +44,8 @@ const apis = [
   cartApi,
   wishlistApi,
   shippingApi,
-  reviewsApi
+  reviewsApi,
+  couponsApi
 
 ];
 

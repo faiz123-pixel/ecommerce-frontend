@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
 import { cartApi, userApi } from "../../api/api";
 
 function CartDashboard() {
@@ -59,16 +58,6 @@ function CartDashboard() {
             min-height: 100vh;
           }
 
-          @media (min-width: 992px) {
-            .cart-main {
-              margin-left: 250px;
-            }
-          }
-
-          .dashboard-card {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             transition: 0.3s;
           }
 
@@ -103,8 +92,6 @@ function CartDashboard() {
           }
         `}
       </style>
-
-      <Sidebar />
 
       <div className="cart-main">
         <div className="container-fluid">

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
 import {
   reviewsApi,
 } from "../../api/api";
@@ -94,7 +93,6 @@ const toggleReviewStatus = async (review) => {
 
           @media (min-width: 992px) {
             .review-main {
-              margin-left: 250px;
             }
           }
 
@@ -183,8 +181,6 @@ const toggleReviewStatus = async (review) => {
           }
         `}
       </style>
-
-      <Sidebar />
 
       <div className="review-main">
         <div className="container-fluid">

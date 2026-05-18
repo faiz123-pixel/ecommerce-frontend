@@ -9,6 +9,7 @@ import Login from './pages/user/Login'
 import Register from './pages/user/Register'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
+import AdminLayout from './pages/admin/AdminLayout'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import Orders from './pages/admin/Orders'
 import Users from './pages/admin/Users'
@@ -21,6 +22,7 @@ import AddReview from './pages/user/AddReview'
 import EditReview from './pages/user/EditReview'
 import ProductDetails from './pages/ProductDetails'
 import ReviewDashboard from './pages/admin/ReviewDashboard'
+import CouponDashboard from './pages/admin/CouponDashboard'
 
 function App() {
 
@@ -59,39 +61,49 @@ function App() {
         },
         {
           path:"/admin",
-          element: <AdminDashboard/>
-        },
-        {
-          path:"/admin/products",
-          element: <ProductManagement/>
-        },
-        {
-          path:"/admin/categories",
-          element: <CategoryPage/>
-        },
-        {
-          path:"/admin/orders",
-          element: <Orders/>
-        },
-        {
-          path:"/admin/users",
-          element:<Users/>
-        },
-        {
-          path:"/admin/payments",
-          element:<Payments/>
-        },
-        {
-          path:"/admin/carts",
-          element:<CartDashboard/>
-        },
-        {
-          path:"/admin/shipping",
-          element:<ShippingDashboard/>
-        },
-        {
-          path:"/admin/review",
-          element:<ReviewDashboard/>
+          element:<AdminLayout/>,
+          children: [
+            {
+              index: true,
+              element: <AdminDashboard />
+            },
+            {
+              path: "products",
+              element: <ProductManagement />
+            },
+            {
+              path: "categories",
+              element: <CategoryPage />
+            },
+            {
+              path: "orders",
+              element: <Orders />
+            },
+            {
+              path: "users",
+              element:<Users />
+            },
+            {
+              path: "payments",
+              element:<Payments />
+            },
+            {
+              path: "carts",
+              element:<CartDashboard />
+            },
+            {
+              path: "shipping",
+              element:<ShippingDashboard />
+            },
+            {
+              path: "review",
+              element:<ReviewDashboard />
+            },
+            {
+              path: "coupon",
+              element:<CouponDashboard />
+            },
+          ]
         },
         {
           path:"/reviews/add/:productId",

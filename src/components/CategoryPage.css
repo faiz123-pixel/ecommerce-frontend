@@ -5,12 +5,6 @@
   min-height: 100vh;
 }
 
-@media (min-width: 992px) {
-  .category-main {
-    margin-left: 250px; /* must match sidebar */
-  }
-}
-
 /* 🔥 FORM */
 .form {
   display: grid;

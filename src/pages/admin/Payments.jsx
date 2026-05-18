@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
 import { paymentApi, userApi } from "../../api/api";
 
 function Payments() {
@@ -54,7 +53,6 @@ function Payments() {
 
         @media (min-width: 992px) {
           .payments-main {
-            margin-left: 250px;
           }
         }
 
@@ -67,8 +65,6 @@ function Payments() {
         }
         `}
       </style>
-
-      <Sidebar />
 
       <div className="payments-main">
         <div className="container-fluid">

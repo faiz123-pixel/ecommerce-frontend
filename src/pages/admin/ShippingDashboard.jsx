@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
 import { ordersApi, shippingApi, userApi } from "../../api/api";
 
 
@@ -130,71 +129,108 @@ function ShippingDashboard() {
   };
 
   return (
-    <>
-      <style>
-        {`
-        .shipping-main {
-          padding: 20px;
-          background: #f4f6f9;
-          min-height: 100vh;
-        }
+  <>
+    <style>
+  {`
+    *{
+      box-sizing:border-box;
+    }
 
-        @media (min-width: 992px) {
-          .shipping-main {
-            margin-left: 250px;
-          }
-        }
+    body{
+      overflow-x:hidden;
+      background:#f4f6f9;
+    }
 
-        .shipping-card {
-          border-radius: 12px;
-          overflow: hidden;
-        }
+    .shipping-main{
+      width:calc(100% - 250px);
+      min-height:100vh;
+      padding:25px;
+      overflow-x:hidden;
+      background:#f4f6f9;
+    }
 
-        .table th {
-          white-space: nowrap;
-        }
+    @media(max-width:992px){
+      .shipping-main{
+        margin-left:0;
+        width:100%;
+        padding:15px;
+      }
+    }
 
-        .badge-status {
-          padding: 8px 12px;
-          font-size: 13px;
-          border-radius: 20px;
-        }
+    .dashboard-wrapper{
+      width:100%;
+      overflow:hidden;
+    }
 
-        .modal-backdrop-custom {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0,0,0,0.5);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 999;
-        }
+    .shipping-card{
+      border:none;
+      border-radius:20px;
+      overflow:hidden;
+      width:100%;
+    }
 
-        .custom-modal {
-          background: white;
-          padding: 25px;
-          border-radius: 10px;
-          width: 400px;
-        }
-      `}
-      </style>
+    .track-card{
+      border:none;
+      border-radius:20px;
+      width:100%;
+    }
 
-      <Sidebar />
+    .table-responsive{
+      width:100%;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+    }
 
-      <div className="shipping-main">
-        <div className="container-fluid">
+    .table{
+      min-width:900px;
+      margin-bottom:0;
+    }
 
-          {/* Track Shipment */}
-          <div className="card shadow border-0 mb-4">
-            <div className="card-body">
-              <h4 className="mb-3">
-                Track Shipment
-              </h4>
+    .table th{
+      white-space:nowrap;
+    }
 
-              <div className="d-flex gap-2">
+    .badge-status{
+      padding:8px 14px;
+      border-radius:20px;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .custom-modal{
+      width:100%;
+      max-width:450px;
+      background:white;
+      border-radius:20px;
+      padding:25px;
+    }
+
+    .modal-backdrop-custom{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.5);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:15px;
+    }
+  `}
+</style>
+
+    <div className="shipping-main">
+      <div className="container-fluid">
+
+        {/* Track Shipment */}
+        <div className="card shadow border-0 mb-4 track-card">
+          <div className="card-body">
+
+            <h4 className="mb-3 fw-bold">
+              📦 Track Shipment
+            </h4>
+
+            <div className="row g-2">
+              <div className="col-md-9">
                 <input
                   type="text"
                   className="form-control"
@@ -206,254 +242,256 @@ function ShippingDashboard() {
                     )
                   }
                 />
+              </div>
 
+              <div className="col-md-3">
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary w-100 track-btn"
                   onClick={handleTrackShipment}
                 >
                   Track
                 </button>
               </div>
-
-              {trackingResult && (
-                <div className="alert alert-success mt-3">
-                  <p>
-                    <strong>Courier:</strong>{" "}
-                    {
-                      trackingResult.courierService
-                    }
-                  </p>
-
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    Shipped
-                  </p>
-
-                  <p>
-                    <strong>Tracking:</strong>{" "}
-                    {
-                      trackingResult.trackingNumber
-                    }
-                  </p>
-                </div>
-              )}
             </div>
+
+            {trackingResult && (
+              <div className="alert alert-success mt-4 mb-0">
+                <p>
+                  <strong>Courier:</strong>{" "}
+                  {
+                    trackingResult.courierService
+                  }
+                </p>
+
+                <p>
+                  <strong>Status:</strong>{" "}
+                  Shipped
+                </p>
+
+                <p className="mb-0">
+                  <strong>Tracking:</strong>{" "}
+                  {
+                    trackingResult.trackingNumber
+                  }
+                </p>
+              </div>
+            )}
           </div>
+        </div>
 
-          {/* Shipping Dashboard */}
-          <div className="card shadow shipping-card border-0">
-            <div className="card-body">
+        {/* Shipping Dashboard */}
+        <div className="card shadow shipping-card border-0">
+          <div className="card-body">
 
-              <h2 className="mb-4 fw-bold">
-                Shipping Dashboard
-              </h2>
+            <h2 className="dashboard-title">
+              🚚 Shipping Dashboard
+            </h2>
 
-              {loading ? (
-                <div className="text-center py-5">
-                  <div className="spinner-border text-primary"></div>
-                </div>
-              ) : shippingList.length === 0 ? (
-                <div className="text-center py-5">
-                  <h5>
-                    No shipping records found
-                  </h5>
-                </div>
-              ) : (
-                <div className="table-responsive">
-                  <table className="table table-bordered align-middle text-center">
-                    <thead className="table-dark">
-                      <tr>
-                        <th>Shipping ID</th>
-                        <th>Order ID</th>
-                        <th>Customer</th>
-                        <th>Courier Service</th>
-                        <th>Tracking Number</th>
-                        <th>Shipping Cost</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
+            {loading ? (
+              <div className="text-center py-5">
+                <div className="spinner-border text-primary"></div>
+              </div>
+            ) : shippingList.length === 0 ? (
+              <div className="text-center py-5">
+                <h5>
+                  No shipping records found
+                </h5>
+              </div>
+            ) : (
+              <div className="table-responsive">
 
-                    <tbody>
-                      {shippingList.map(
-                        (shipping) => (
-                          <tr
-                            key={
-                              shipping.id
+                <table className="table table-hover align-middle text-center">
+
+                  <thead className="table-dark">
+                    <tr>
+                      <th>Shipping ID</th>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Courier</th>
+                      <th>Tracking No.</th>
+                      <th>Cost</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {shippingList.map(
+                      (shipping) => (
+                        <tr key={shipping.id}>
+
+                          <td>
+                            {shipping.id}
+                          </td>
+
+                          <td>
+                            {
+                              shipping.orders
+                                ?.orderId
                             }
-                          >
-                            <td>
+                          </td>
+
+                          <td>
+                            {getCustomerName(
+                              shipping.orders
+                                ?.orderId
+                            )}
+                          </td>
+
+                          <td>
+                            {
+                              shipping.courierService
+                            }
+                          </td>
+
+                          <td>
+                            <span className="tracking-number">
                               {
-                                shipping.id
+                                shipping.trackingNumber
                               }
-                            </td>
+                            </span>
+                          </td>
 
-                            <td>
-                              {
-                                shipping.orders
-                                  ?.orderId
+                          <td>
+                            ₹
+                            {
+                              shipping.shippingCost
+                            }
+                          </td>
+
+                          <td>
+                            <span className="badge bg-success badge-status">
+                              Shipped
+                            </span>
+                          </td>
+
+                          <td>
+                            <button
+                              className="btn btn-warning btn-sm"
+                              onClick={() =>
+                                openUpdateModal(
+                                  shipping
+                                )
                               }
-                            </td>
+                            >
+                              Update
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
 
-                            <td>
-                              {getCustomerName(
-                                shipping.orders
-                                  ?.orderId
-                              )}
-                            </td>
+                </table>
+              </div>
+            )}
 
-                            <td>
-                              {
-                                shipping.courierService
-                              }
-                            </td>
-
-                            <td>
-                              <span className="fw-semibold text-primary">
-                                {
-                                  shipping.trackingNumber
-                                }
-                              </span>
-                            </td>
-
-                            <td>
-                              ₹
-                              {
-                                shipping.shippingCost
-                              }
-                            </td>
-
-                            <td>
-                              <span className="badge bg-success badge-status">
-                                Shipped
-                              </span>
-                            </td>
-
-                            <td>
-                              <button
-                                className="btn btn-warning btn-sm"
-                                onClick={() =>
-                                  openUpdateModal(
-                                    shipping
-                                  )
-                                }
-                              >
-                                Update
-                              </button>
-                            </td>
-                          </tr>
-                        )
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-
-            </div>
           </div>
         </div>
       </div>
+    </div>
 
-      {/* Update Shipping Modal */}
-      {showModal && (
-        <div className="modal-backdrop-custom">
-          <div className="custom-modal">
+    {/* Modal */}
+    {showModal && (
+      <div className="modal-backdrop-custom">
 
-            <h4 className="mb-3">
-              Update Shipping
-            </h4>
+        <div className="custom-modal">
 
-            <form
-              onSubmit={handleUpdateShipping}
-            >
-              <div className="mb-3">
-                <label className="form-label">
-                  Courier Service
-                </label>
+          <h4 className="mb-4 fw-bold">
+            Update Shipping
+          </h4>
 
-                <input
-                  type="text"
-                  className="form-control"
-                  value={
-                    updateData.courierService
-                  }
-                  onChange={(e) =>
-                    setUpdateData({
-                      ...updateData,
-                      courierService:
-                        e.target.value,
-                    })
-                  }
-                />
-              </div>
+          <form onSubmit={handleUpdateShipping}>
 
-              <div className="mb-3">
-                <label className="form-label">
-                  Tracking Number
-                </label>
+            <div className="mb-3">
+              <label className="form-label">
+                Courier Service
+              </label>
 
-                <input
-                  type="text"
-                  className="form-control"
-                  value={
-                    updateData.trackingNumber
-                  }
-                  onChange={(e) =>
-                    setUpdateData({
-                      ...updateData,
-                      trackingNumber:
-                        e.target.value,
-                    })
-                  }
-                />
-              </div>
+              <input
+                type="text"
+                className="form-control"
+                value={
+                  updateData.courierService
+                }
+                onChange={(e) =>
+                  setUpdateData({
+                    ...updateData,
+                    courierService:
+                      e.target.value,
+                  })
+                }
+              />
+            </div>
 
-              <div className="mb-3">
-                <label className="form-label">
-                  Shipping Cost
-                </label>
+            <div className="mb-3">
+              <label className="form-label">
+                Tracking Number
+              </label>
 
-                <input
-                  type="number"
-                  className="form-control"
-                  value={
-                    updateData.shippingCost
-                  }
-                  onChange={(e) =>
-                    setUpdateData({
-                      ...updateData,
-                      shippingCost:
-                        e.target.value,
-                    })
-                  }
-                />
-              </div>
+              <input
+                type="text"
+                className="form-control"
+                value={
+                  updateData.trackingNumber
+                }
+                onChange={(e) =>
+                  setUpdateData({
+                    ...updateData,
+                    trackingNumber:
+                      e.target.value,
+                  })
+                }
+              />
+            </div>
 
-              <div className="d-flex gap-2">
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100"
-                >
-                  Save Changes
-                </button>
+            <div className="mb-4">
+              <label className="form-label">
+                Shipping Cost
+              </label>
 
-                <button
-                  type="button"
-                  className="btn btn-secondary w-100"
-                  onClick={() =>
-                    setShowModal(false)
-                  }
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+              <input
+                type="number"
+                className="form-control"
+                value={
+                  updateData.shippingCost
+                }
+                onChange={(e) =>
+                  setUpdateData({
+                    ...updateData,
+                    shippingCost:
+                      e.target.value,
+                  })
+                }
+              />
+            </div>
 
-          </div>
+            <div className="d-flex gap-2">
+
+              <button
+                type="submit"
+                className="btn btn-primary w-100"
+              >
+                Save Changes
+              </button>
+
+              <button
+                type="button"
+                className="btn btn-secondary w-100"
+                onClick={() =>
+                  setShowModal(false)
+                }
+              >
+                Cancel
+              </button>
+
+            </div>
+          </form>
         </div>
-      )}
-    </>
-  );
+      </div>
+    )}
+  </>
+);
 }
 
 export default ShippingDashboard;

@@ -14,6 +14,7 @@ function Sidebar() {
     { name: "Carts", path: "/admin/carts" },
     { name: "Shipping", path: "/admin/shipping" },
     { name: "Reviews", path: "/admin/review" },
+    { name: "Coupons", path: "/admin/coupon" },
   ];
 
   return (

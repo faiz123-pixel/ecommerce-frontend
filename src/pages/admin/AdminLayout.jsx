@@ -1,10 +1,45 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import { LoginContext } from "../../context/LoginContext";
 
-function AdminLayout({ children }) {
+
+function AdminLayout() {
+
+  const { user } = useContext(LoginContext);
+
+  // ✅ Check Admin Role
+  console.log(user)
+  const isAdmin =
+    user?.role?.roleName === "ROLE_ADMIN" ||
+    user?.roles?.roleName?.includes("ADMIN");
+
+  // ❌ If Not Admin
+  if (!isAdmin) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          height: "100vh",
+          background: "#f4f6f9",
+        }}
+      >
+        <div className="card shadow p-5 text-center border-0">
+          <h2 className="text-danger mb-3">
+            Access Denied
+          </h2>
+
+          <p className="text-muted">
+            Only Admin Can Access This Page
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={styles.container}>
-      
+
       {/* Sidebar */}
       <Sidebar />
 
@@ -12,8 +47,8 @@ function AdminLayout({ children }) {
       <div style={styles.main}>
 
         {/* Page Content */}
-        <div style={styles.content} >
-          {children}
+        <div style={styles.content}>
+          <Outlet />
         </div>
 
       </div>
@@ -25,38 +60,17 @@ export default AdminLayout;
 
 const styles = {
   container: {
-    display: "flex"
+    display: "flex",
   },
 
   main: {
     marginLeft: "250px", // same as sidebar width
     width: "100%",
     background: "#f4f6f9",
-    minHeight: "100vh"
-  },
-
-  topbar: {
-    height: "60px",
-    background: "#198754", // Bootstrap green
-    color: "#fff",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "0 20px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
-  },
-
-  logoutBtn: {
-    background: "#fff",
-    color: "#198754",
-    border: "none",
-    padding: "6px 12px",
-    borderRadius: "5px",
-    fontWeight: "bold",
-    cursor: "pointer"
+    minHeight: "100vh",
   },
 
   content: {
-    padding: "20px"
-  }
+    padding: "20px",
+  },
 };
