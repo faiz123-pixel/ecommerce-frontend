@@ -110,7 +110,6 @@ function Checkout() {
 
   return;
 }
-
       // Discount calculation
       let discount = 0;
 
