@@ -69,7 +69,7 @@ function Navbar() {
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="btn btn-light btn-sm ms-lg-3" to="/login">
+                  <Link className="btn btn- btn-sm ms-lg-3" to="/login">
                     Login
                   </Link>
                 </li>
